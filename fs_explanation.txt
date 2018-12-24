@@ -1,0 +1,26 @@
+void check_super() - validates the file system super block, by sanity checking s_magic and s_nblocks.
+
+bool block_is_free(uint32_t blockno) - checks the bitmap to see if the block #blockno is free
+
+alloc_block - checks the bitmap for a free block, allocates it, and flushes the block to the disk immediately. returns the block number of the new block.
+
+check_bitmap - sanity check of the bitmap, make sure all bitmap blocks are marked i nuse, and the super block,etc.
+
+fs_init - initialize the file system. 
+	ide_set_disk()
+	bc_init()
+	set super and bitmap, and check them both 
+
+file_block_walk - kinda like pgdir_walk but for files
+
+fle_get_block - another lab 5 function
+
+dir_lookup(File *dir, char *name, File **file) - try to find a file named "name" in dir.
+
+dir_alloc_file(struct File *dir, struct File **file) - set *file to point at a free File structure in dir. The caller is responsible for filling in the File fields.
+
+walk_path(char *path, File **pdir, File **pf, char *lastelem) - evaluate a path name, startng at the root. On success, set *pf to the file we found and set *pdir to the directory the file is in. If we cannot find the fle but find the directory it should be in, set *pdir and copy the fnal path element nto lastelem.
+
+int file_create(path, File **pf) - create a "path", and set *pf to pont at the fle and return 0.
+
+int file_open(path, File **pf) - open a path

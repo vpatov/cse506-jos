@@ -1,0 +1,15 @@
+List challenge problems completed as part of the lab 1 handin, as well
+as the problem number.
+
+======================================================================
+Completed challenge 1, added colors. Implemented this using a new 
+format specifier that seemed to be unused, "%r". You can print a total 
+of 16 different colors. 
+
+Usage: cprintf("%r3","This text will be teal\n");
+
+Use numbers 0-f, i.e. "%r0", "%r1", ... "%re", %rf" to print the 16 
+different colors. 
+
+Demonstration: type in command "colortest" into the JOS monitor (make 
+sure you're not running with nox).

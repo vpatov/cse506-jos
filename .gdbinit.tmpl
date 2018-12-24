@@ -1,0 +1,38 @@
+set $split_cs = 1
+
+define hook-stop
+  if $split_cs == 1
+    # Translate the segment:offset into a physical address
+    printf "[%4x:%4x] ", $cs, $eip
+    x/i $cs*16+$eip
+  else
+    x/i $pc
+  end
+end
+
+# attach to the target
+target remote localhost:1234
+
+# intially in real mode; load the boot obj symbols
+set architecture i8086
+set $split_cs = 1
+symbol-file obj/boot/boot.out
+
+# break right after entering the 32-bit mode in boot code
+tbreak protcseg
+commands
+  set architecture i386
+  set $split_cs = 0
+  # break on the kernel entry (__head64 in kern/bootstrap.S)
+  tbreak *0x100000
+  commands
+    # now load kernel symbols
+    symbol-file obj/kern/kernel
+    # break right before entering the 64-bit mode
+    tbreak jumpto_longmode
+    commands
+      set architecture i386:x86-64
+      #tbreak _start
+    end
+  end
+end
